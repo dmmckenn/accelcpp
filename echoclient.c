@@ -44,11 +44,14 @@ int main(int argc, char** argv) {
     printf("please enter ur msg: ");
     bzero(buf, BUFSIZE);
     fgets(buf, BUFSIZE, stdin);
-    n = write(sockfd, buf, BUFSIZE);
+    n = write(sockfd, buf, strlen(buf));
 
+    if (n < 0) error("ERROR writing to socket");
+
+    bzero(buf,BUFSIZE);
+    n = read(sockfd, buf, BUFSIZE);
     if (n < 0) error("ERROR reading from socket");
-
-    printf("Echo from server: %s", buf);
+    printf("Echo from server: %s\n", buf);
     close(sockfd);
     return 0;
 }
